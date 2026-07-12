@@ -238,6 +238,15 @@ export const contact = {
   text: 'Vertel ons over uw verbouwing, renovatie of onderhoud in Aalsmeer en omstreken. U ontvangt een vrijblijvende offerte, meestal binnen enkele dagen.',
 }
 
+// Contactformulier — verstuurt via Formspree naar info@jvbbouw.nl.
+// Zolang formspreeId leeg is, valt het formulier terug op een mailto
+// zodat aanvragen tóch aankomen. Vul de ID in zodra de gratis Formspree-form
+// is aangemaakt met info@jvbbouw.nl als ontvanger (bijv. 'xldbzabc').
+export const contactForm = {
+  formspreeId: '',
+  recipient: 'info@jvbbouw.nl',
+}
+
 // FAQ — beantwoordt echte zoekvragen en levert FAQ-structured-data (SEO)
 export const faq = [
   {

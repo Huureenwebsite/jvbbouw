@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import { company, hero, services, pillars, protocol, trust, projects, contact, seo, faq } from './content'
+import { company, hero, services, pillars, protocol, trust, projects, contact, contactForm, seo, faq } from './content'
 import {
   Icon, CountUp, prefersReducedMotion,
   ArrowUpRight, ArrowRight, Phone, Mail, MapPin, Upload, CheckCircle2, X, ChevronDown,
@@ -388,13 +388,37 @@ function Field({ label, type = 'text', name, textarea }) {
 }
 
 function ContactForm() {
-  const [status, setStatus] = useState('idle')
+  const [status, setStatus] = useState('idle') // 'idle' | 'sending' | 'sent' | 'error'
   const [files, setFiles] = useState([])
 
-  const onSubmit = (e) => {
+  const onSubmit = async (e) => {
     e.preventDefault()
+    const form = e.currentTarget
+    const data = new FormData(form)
+    if (data.get('_gotcha')) return // honeypot: spam-bot ingevuld
+    data.append('_subject', 'Nieuwe aanvraag via jvbbouw.nl')
     setStatus('sending')
-    setTimeout(() => setStatus('sent'), 1200)
+    try {
+      if (contactForm.formspreeId) {
+        const res = await fetch(`https://formspree.io/f/${contactForm.formspreeId}`, {
+          method: 'POST',
+          body: data,
+          headers: { Accept: 'application/json' },
+        })
+        if (!res.ok) throw new Error('form-error')
+        setStatus('sent')
+      } else {
+        // Fallback tot Formspree actief is: open de mailclient met de gegevens
+        const body = [...data.entries()]
+          .filter(([k]) => !k.startsWith('_'))
+          .map(([k, v]) => `${k}: ${v}`)
+          .join('\n')
+        window.location.href = `mailto:${contactForm.recipient}?subject=${encodeURIComponent('Aanvraag via website')}&body=${encodeURIComponent(body)}`
+        setStatus('sent')
+      }
+    } catch {
+      setStatus('error')
+    }
   }
   const addFiles = (list) => setFiles((prev) => [...prev, ...[...list].filter((f) => f.type.startsWith('image/'))].slice(0, 5))
 
@@ -424,6 +448,7 @@ function ContactForm() {
             </div>
           ) : (
             <form onSubmit={onSubmit} className="space-y-4">
+              <input type="text" name="_gotcha" tabIndex={-1} autoComplete="off" aria-hidden="true" className="hidden" />
               <div className="grid gap-4 sm:grid-cols-2">
                 <Field label="Naam" name="naam" />
                 <Field label="E-mail" name="email" type="email" />
@@ -455,6 +480,11 @@ function ContactForm() {
                 </div>
               )}
 
+              {status === 'error' && (
+                <p className="rounded-xl bg-red-500/10 px-4 py-3 text-center text-sm text-red-300">
+                  Er ging iets mis. Bel ons op {company.phoneDisplay} of mail naar {company.email}.
+                </p>
+              )}
               <button
                 type="submit"
                 disabled={status === 'sending'}
