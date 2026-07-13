@@ -21,17 +21,16 @@ export {
   Upload, CheckCircle2, X, Menu, ChevronDown,
 }
 
-// JvB-monogram + wordmark
+// Officieel JvB Bouw-logo. `dark` = op donkere achtergrond → witte variant.
 export function Logo({ dark = false, className = '' }) {
   return (
-    <div className={`flex items-center gap-2.5 ${className}`}>
-      <div className="grid h-9 w-9 place-items-center rounded-xl bg-deep font-display text-sm font-extrabold tracking-tight text-accent">
-        JvB
-      </div>
-      <span className={`font-display text-lg font-extrabold tracking-tight ${dark ? 'text-white' : 'text-ink'}`}>
-        JvB&nbsp;Bouw
-      </span>
-    </div>
+    <img
+      src={dark ? '/logo-white.png' : '/logo-dark.png'}
+      alt="JvB Bouw — verbouwing, renovatie en onderhoud"
+      width={160}
+      height={86}
+      className={`h-9 w-auto sm:h-10 ${className}`}
+    />
   )
 }
 
