@@ -261,10 +261,6 @@ export const faq = [
     q: 'Doet JvB Bouw zowel woningen als bedrijfspanden?',
     a: 'Zeker. We verzorgen verbouwing, renovatie en onderhoud voor zowel particuliere woningen als bedrijfspanden.',
   },
-  {
-    q: 'Regelen jullie ook de vergunning voor een aanbouw of dakkapel?',
-    a: 'De vergunning vraagt u zelf aan bij de gemeente; als eigenaar bent u daar verantwoordelijk voor. Wij zorgen voor een vakkundige uitvoering en denken graag met u mee over de mogelijkheden.',
-  },
 ]
 
 // Persoonlijke introductie — wie de klant te maken krijgt
