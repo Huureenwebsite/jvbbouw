@@ -293,14 +293,17 @@ function Projects() {
       </div>
       <div className="grid gap-6 md:grid-cols-2">
         {projects.map((p) => (
-          <div key={p.title} className="proj-card group relative aspect-[16/11] overflow-hidden rounded-3xl">
+          <Link key={p.slug || p.title} to={p.slug ? `/projecten/${p.slug}` : '#'} className="proj-card group relative block aspect-[16/11] overflow-hidden rounded-3xl">
             <img src={p.image} alt={p.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-deep/85 via-deep/10 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-7">
               <span className="font-mono text-[11px] uppercase tracking-[0.14em] text-accent">{p.tag}</span>
               <h3 className="mt-1.5 font-display text-2xl font-bold text-white">{p.title}</h3>
+              <span className="mt-2 inline-flex items-center gap-1 font-mono text-[11px] uppercase tracking-[0.1em] text-white/80 opacity-0 transition-opacity group-hover:opacity-100">
+                Bekijk project <ArrowRight className="h-3.5 w-3.5" />
+              </span>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
     </section>

@@ -220,16 +220,32 @@ export const trust = [
 
 export const projects = [
   {
+    slug: 'badkamerrenovatie-uithoorn',
     tag: 'Uithoorn · Renovatie',
     title: 'Complete badkamerrenovatie',
     image: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=1600&auto=format&fit=crop',
     alt: 'Complete badkamerrenovatie in Uithoorn door JvB Bouw',
+    intro:
+      'Voor deze woning in Uithoorn verzorgden wij een complete badkamerrenovatie van A tot Z. Van het uitbreken van de oude ruimte tot het tegelwerk, sanitair en de installatie — alles in één hand, strak en waterdicht afgewerkt.',
+    gallery: [
+      'https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=1400&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1628745277862-bc0b2d68c50c?q=80&w=1400&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1426927308491-6380b6a9936f?q=80&w=1400&auto=format&fit=crop',
+    ],
   },
   {
+    slug: 'dakkapel-mijdrecht',
     tag: 'Mijdrecht · Verbouwing',
     title: 'Dakkapel plaatsen',
     image: 'https://images.unsplash.com/photo-1627141234469-24711efb373c?q=80&w=1600&auto=format&fit=crop',
     alt: 'Dakkapel geplaatst in Mijdrecht door JvB Bouw',
+    intro:
+      'In Mijdrecht plaatsten wij een dakkapel die de zolder in één keer voorzag van meer licht, ruimte en hoofdhoogte. Vakkundig geplaatst, netjes geïsoleerd en waterdicht afgewerkt — met minimale overlast voor de bewoners.',
+    gallery: [
+      'https://images.unsplash.com/photo-1627141234469-24711efb373c?q=80&w=1400&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1593012671976-1422185230fb?q=80&w=1400&auto=format&fit=crop',
+      'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=1400&auto=format&fit=crop',
+    ],
   },
 ]
 

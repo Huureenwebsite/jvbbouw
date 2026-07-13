@@ -85,11 +85,17 @@ export async function fetchCmsContent() {
     data.projects?.length
       ? data.projects.map((doc, i) => {
           const fallback = projects[i] || {}
+          const gallery = doc.gallery?.length
+            ? doc.gallery.map((img) => urlFor(img, 1400)).filter(Boolean)
+            : fallback.gallery || []
           return {
+            slug: doc.slug?.current || fallback.slug,
             tag: doc.tag || fallback.tag,
             title: doc.title || fallback.title,
             image: urlFor(doc.image, 1600) || fallback.image,
             alt: doc.alt || fallback.alt || doc.title,
+            intro: doc.intro || fallback.intro || '',
+            gallery,
           }
         })
       : projects
