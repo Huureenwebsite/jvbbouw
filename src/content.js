@@ -243,7 +243,7 @@ export const contact = {
 // zodat aanvragen tóch aankomen. Vul de ID in zodra de gratis Formspree-form
 // is aangemaakt met info@jvbbouw.nl als ontvanger (bijv. 'xldbzabc').
 export const contactForm = {
-  formspreeId: '',
+  formspreeId: 'mqerkpkz',
   recipient: 'info@jvbbouw.nl',
 }
 
