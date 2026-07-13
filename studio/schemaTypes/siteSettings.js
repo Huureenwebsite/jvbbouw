@@ -7,6 +7,7 @@ export default defineType({
   groups: [
     {name: 'bedrijf', title: 'Bedrijfsgegevens'},
     {name: 'hero', title: 'Startscherm (hero)'},
+    {name: 'persoon', title: 'Persoonlijk (Jordy)'},
     {name: 'contact', title: 'Contact'},
     {name: 'seo', title: 'SEO'},
   ],
@@ -26,6 +27,13 @@ export default defineType({
     defineField({name: 'heroSubtext', title: 'Introtekst', type: 'text', rows: 3, group: 'hero'}),
     defineField({name: 'heroImage', title: 'Achtergrondfoto', type: 'image', options: {hotspot: true}, group: 'hero'}),
     defineField({name: 'heroAlt', title: 'Fotobeschrijving (voor Google/toegankelijkheid)', type: 'string', group: 'hero'}),
+
+    defineField({name: 'personEyebrow', title: 'Bovenschrift', type: 'string', group: 'persoon'}),
+    defineField({name: 'personName', title: 'Naam', type: 'string', group: 'persoon'}),
+    defineField({name: 'personRole', title: 'Functie / rol', type: 'string', group: 'persoon'}),
+    defineField({name: 'personText', title: 'Persoonlijke tekst', type: 'text', rows: 5, group: 'persoon'}),
+    defineField({name: 'personImage', title: 'Foto van Jordy (optioneel)', type: 'image', options: {hotspot: true}, group: 'persoon'}),
+    defineField({name: 'personAlt', title: 'Fotobeschrijving', type: 'string', group: 'persoon'}),
 
     defineField({name: 'contactTitle', title: 'Contact — titel', type: 'string', group: 'contact'}),
     defineField({name: 'contactText', title: 'Contact — tekst', type: 'text', rows: 3, group: 'contact'}),

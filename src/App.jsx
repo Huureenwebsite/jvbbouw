@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import {
   Icon, CountUp, prefersReducedMotion,
-  ArrowUpRight, ArrowRight, Phone, Mail, MapPin, Upload, CheckCircle2, X, ChevronDown,
+  ArrowUpRight, ArrowRight, Phone, Mail, MapPin, Upload, CheckCircle2, X, ChevronDown, Star,
 } from './components/primitives'
 import { useSEO } from './lib/useSEO'
 import { useContent } from './lib/ContentProvider'
@@ -323,6 +323,74 @@ function TrustSignals() {
   )
 }
 
+/* ── Person (persoonlijke introductie — Jordy) ────────── */
+function Person() {
+  const { person } = useContent()
+  return (
+    <section className={`${CONTAINER} py-24 sm:py-32`}>
+      <div className="grid items-stretch gap-0 overflow-hidden rounded-[2.5rem] border border-divider bg-surface lg:grid-cols-2">
+        <div className="flex flex-col justify-center p-8 sm:p-12">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">{person.eyebrow}</p>
+          <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-4xl">{person.name}</h2>
+          <p className="mt-1 font-serif text-lg italic text-primary">{person.role}</p>
+          <p className="mt-6 leading-relaxed text-muted">{person.text}</p>
+          <div className="mt-8 h-px w-24 bg-gradient-to-r from-primary to-transparent" />
+        </div>
+        <div className="relative min-h-[320px]">
+          {person.image ? (
+            <img src={person.image} alt={person.alt} className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div className="relative flex h-full min-h-[320px] flex-col items-center justify-center bg-deep p-10 text-center">
+              <div className="blueprint-bg absolute inset-0 opacity-[0.12]" />
+              <img src="/logo-white.png" alt="JvB Bouw" className="relative mb-5 h-14 w-auto" />
+              <p className="relative font-display text-2xl font-bold text-white">{person.name}</p>
+              <p className="relative mt-1 font-mono text-[11px] uppercase tracking-[0.16em] text-accent">Uw vaste vakman</p>
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  )
+}
+
+/* ── Reviews (schuivende balk) ─────────────────────────── */
+function ReviewCard({ r }) {
+  return (
+    <figure className="w-80 flex-none rounded-3xl border border-divider bg-surface p-7 shadow-sm">
+      <div className="mb-3 flex gap-0.5 text-accent">
+        {Array.from({ length: 5 }).map((_, i) => (
+          <Star key={i} className="h-4 w-4" fill={i < r.rating ? 'currentColor' : 'none'} strokeWidth={1.6} />
+        ))}
+      </div>
+      <blockquote className="leading-relaxed text-ink/80">{`“${r.text}”`}</blockquote>
+      <figcaption className="mt-4 font-display text-sm font-semibold">
+        {r.name} <span className="font-normal text-muted">· {r.place}</span>
+      </figcaption>
+    </figure>
+  )
+}
+
+function Reviews() {
+  const { reviews } = useContent()
+  if (!reviews?.length) return null
+  const loop = [...reviews, ...reviews] // dubbel voor een naadloze loop
+  return (
+    <section className="overflow-hidden py-24 sm:py-32">
+      <div className={`${CONTAINER} mb-12 text-center`}>
+        <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">Wat klanten zeggen</p>
+        <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-5xl">Tevreden opdrachtgevers</h2>
+      </div>
+      <div className="relative">
+        <div className="marquee flex w-max gap-6 px-3">
+          {loop.map((r, i) => <ReviewCard key={i} r={r} />)}
+        </div>
+        <div className="pointer-events-none absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-background to-transparent sm:w-28" />
+        <div className="pointer-events-none absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-background to-transparent sm:w-28" />
+      </div>
+    </section>
+  )
+}
+
 /* ── FAQ (met FAQPage structured data) ────────────────── */
 function Faq() {
   const { faq } = useContent()
@@ -528,8 +596,10 @@ export default function App() {
         <Features />
         <Pillars />
         <Protocol />
+        <Person />
         <ServicesGrid />
         <Projects />
+        <Reviews />
         <TrustSignals />
         <Faq />
         <ContactForm />

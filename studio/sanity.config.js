@@ -15,6 +15,7 @@ const structure = (S) =>
       S.divider(),
       S.documentTypeListItem('service').title('Diensten'),
       S.documentTypeListItem('project').title('Projecten'),
+      S.documentTypeListItem('review').title('Reviews'),
       S.documentTypeListItem('faqItem').title('Veelgestelde vragen'),
     ])
 

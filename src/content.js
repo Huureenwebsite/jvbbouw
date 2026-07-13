@@ -133,7 +133,7 @@ export const services = [
       'Meer leefruimte zonder te verhuizen. Met een aanbouw, opbouw of uitbouw vergroot JvB Bouw uw woning in Aalsmeer op een manier die naadloos aansluit op het bestaande — architectonisch én constructief.',
     points: [
       'Aanbouw, opbouw en uitbouw',
-      'Vergunningstraject en tekenwerk',
+      'Meedenken over ontwerp en indeling',
       'Fundering, constructie en afbouw',
       'Afwerking passend bij uw woning',
     ],
@@ -263,6 +263,25 @@ export const faq = [
   },
   {
     q: 'Regelen jullie ook de vergunning voor een aanbouw of dakkapel?',
-    a: 'Ja, bij een aanbouw, uitbouw of dakkapel kunnen wij het vergunningstraject en het benodigde tekenwerk voor u verzorgen.',
+    a: 'De vergunning vraagt u zelf aan bij de gemeente; als eigenaar bent u daar verantwoordelijk voor. Wij zorgen voor een vakkundige uitvoering en denken graag met u mee over de mogelijkheden.',
   },
+]
+
+// Persoonlijke introductie — wie de klant te maken krijgt
+export const person = {
+  eyebrow: 'De vakman achter JvB Bouw',
+  name: 'Jordy van Beek',
+  role: 'Eigenaar & uw vaste aanspreekpunt',
+  text: 'Achter JvB Bouw staat Jordy van Beek — de J, v en B zeggen genoeg. U heeft bij ons geen anoniem bedrijf aan de lijn, maar één vakman die uw project van begin tot eind persoonlijk begeleidt. Korte lijnen, eerlijk advies en werk waar hij met zijn eigen naam voor staat.',
+  image: '', // leeg = merkpaneel i.p.v. foto; upload later een echte foto van Jordy
+  alt: 'Jordy van Beek, eigenaar van JvB Bouw',
+}
+
+// Reviews — VOORBEELDEN. Vervang deze door echte reviews (bijv. van Google).
+export const reviews = [
+  { name: 'Mark', place: 'Aalsmeer', rating: 5, text: 'Vakkundig werk en heldere communicatie. De verbouwing is strak opgeleverd en precies volgens afspraak.' },
+  { name: 'Linda', place: 'Uithoorn', rating: 5, text: 'Onze badkamer is prachtig geworden. Netjes gewerkt en altijd één aanspreekpunt — echt een aanrader.' },
+  { name: 'Peter', place: 'Amstelveen', rating: 5, text: 'Snel, betrouwbaar en meedenkend. De planning klopte en de afwerking is top.' },
+  { name: 'Sandra', place: 'Mijdrecht', rating: 5, text: 'Dakkapel binnen een dag geplaatst en keurig afgewerkt. Zeer tevreden over het resultaat!' },
+  { name: 'Rob', place: 'Hoofddorp', rating: 5, text: 'Prettig contact van offerte tot oplevering. Alles nagekomen zonder verrassingen.' },
 ]

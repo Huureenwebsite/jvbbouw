@@ -17,6 +17,7 @@ const QUERY = `{
   "settings": *[_type == "siteSettings"][0],
   "services": *[_type == "service"] | order(order asc),
   "projects": *[_type == "project"] | order(order asc),
+  "reviews": *[_type == "review"] | order(order asc),
   "faq": *[_type == "faqItem"] | order(order asc)
 }`
 
@@ -24,7 +25,7 @@ const QUERY = `{
 // Bij een lege/ontbrekende waarde blijft de fallback staan, zodat er nooit iets kapot gaat.
 export async function fetchCmsContent() {
   const data = await sanityClient.fetch(QUERY)
-  const { company, hero, contact, seo, services, projects, faq } = staticContent
+  const { company, hero, contact, seo, services, projects, faq, person, reviews } = staticContent
 
   const s = data.settings || {}
 
@@ -96,6 +97,26 @@ export async function fetchCmsContent() {
   const mergedFaq =
     data.faq?.length ? data.faq.map((doc) => ({ q: doc.question, a: doc.answer })) : faq
 
+  const mergedPerson = {
+    ...person,
+    eyebrow: s.personEyebrow || person.eyebrow,
+    name: s.personName || person.name,
+    role: s.personRole || person.role,
+    text: s.personText || person.text,
+    image: urlFor(s.personImage, 900) || person.image,
+    alt: s.personAlt || person.alt,
+  }
+
+  const mergedReviews =
+    data.reviews?.length
+      ? data.reviews.map((doc) => ({
+          name: doc.name,
+          place: doc.place,
+          rating: doc.rating || 5,
+          text: doc.text,
+        }))
+      : reviews
+
   return {
     company: mergedCompany,
     hero: mergedHero,
@@ -104,5 +125,7 @@ export async function fetchCmsContent() {
     services: mergedServices,
     projects: mergedProjects,
     faq: mergedFaq,
+    person: mergedPerson,
+    reviews: mergedReviews,
   }
 }

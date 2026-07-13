@@ -12,6 +12,8 @@ const initial = {
   services: staticContent.services,
   projects: staticContent.projects,
   faq: staticContent.faq,
+  person: staticContent.person,
+  reviews: staticContent.reviews,
   // niet-beheerde onderdelen (blijven altijd uit code):
   nav: staticContent.nav,
   pillars: staticContent.pillars,

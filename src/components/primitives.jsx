@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import {
   Hammer, Paintbrush, Wrench, Boxes, Bath, PanelTop,
   ShieldCheck, MessageSquare, Award, ArrowUpRight, ArrowRight, ArrowLeft,
-  Phone, Mail, MapPin, Clock, Upload, CheckCircle2, X, Menu, ChevronDown,
+  Phone, Mail, MapPin, Clock, Upload, CheckCircle2, X, Menu, ChevronDown, Star, Quote,
 } from 'lucide-react'
 
 // Map content.js icon-namen naar lucide componenten
@@ -18,7 +18,7 @@ export function Icon({ name, ...props }) {
 
 export {
   ArrowUpRight, ArrowRight, ArrowLeft, Phone, Mail, MapPin, Clock,
-  Upload, CheckCircle2, X, Menu, ChevronDown,
+  Upload, CheckCircle2, X, Menu, ChevronDown, Star, Quote,
 }
 
 // Officieel JvB Bouw-logo. `dark` = op donkere achtergrond → witte variant.
