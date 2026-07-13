@@ -80,6 +80,22 @@ function Hero() {
   )
 }
 
+/* ── Trust-strip (direct onder de hero) ───────────────── */
+function TrustStrip() {
+  const items = ['Vrijblijvende offerte', 'Heldere prijsafspraken', 'Nette oplevering', 'Ingeschreven bij de KvK']
+  return (
+    <div className="border-b border-divider bg-surface">
+      <div className={`${CONTAINER} flex flex-wrap items-center justify-center gap-x-8 gap-y-3 py-5 sm:justify-between`}>
+        {items.map((t) => (
+          <div key={t} className="inline-flex items-center gap-2 text-sm font-medium text-ink/75">
+            <CheckCircle2 className="h-4 w-4 flex-none text-primary" /> {t}
+          </div>
+        ))}
+      </div>
+    </div>
+  )
+}
+
 /* ── Features (3 interactieve kaarten) ────────────────── */
 function Features() {
   const ref = useRef(null)
@@ -568,7 +584,7 @@ function ContactForm() {
               >
                 {status === 'sending' ? 'Versturen…' : 'Aanvraag versturen'} <ArrowUpRight className="h-4 w-4" />
               </button>
-              <p className="text-center font-mono text-[10px] text-white/35">Uw gegevens worden vertrouwelijk behandeld.</p>
+              <p className="text-center font-mono text-[10px] text-white/45">Reactie binnen 1 werkdag · Vrijblijvend · Uw gegevens worden vertrouwelijk behandeld.</p>
             </form>
           )}
         </div>
@@ -593,6 +609,7 @@ export default function App() {
       <Navbar />
       <main>
         <Hero />
+        <TrustStrip />
         <Features />
         <Pillars />
         <Protocol />

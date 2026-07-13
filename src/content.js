@@ -14,6 +14,7 @@ export const company = {
   url: 'https://jvbbouw.nl',
   phoneDisplay: '06 46 78 9703',
   phoneTel: '+31646789703',
+  whatsapp: '31646789703',
   email: 'info@jvbbouw.nl',
   street: 'Aalsmeerderweg 278',
   postal: '1432 CX',
@@ -260,6 +261,18 @@ export const faq = [
   {
     q: 'Doet JvB Bouw zowel woningen als bedrijfspanden?',
     a: 'Zeker. We verzorgen verbouwing, renovatie en onderhoud voor zowel particuliere woningen als bedrijfspanden.',
+  },
+  {
+    q: 'Wat kost een verbouwing, badkamer of dakkapel?',
+    a: 'Elk project is maatwerk, dus een vaste prijs bestaat niet. Na een vrijblijvend bezoek ontvangt u een heldere offerte met een duidelijke prijsopbouw — zonder verrassingen achteraf.',
+  },
+  {
+    q: 'Hoe snel kunnen jullie starten?',
+    a: 'Dat hangt af van de omvang van het project en onze planning. Neem gerust contact op voor de actuele mogelijkheden; we denken graag met u mee over een realistische startdatum.',
+  },
+  {
+    q: 'Werken jullie met duidelijke afspraken?',
+    a: 'Ja. JvB Bouw is ingeschreven bij de KvK (80556353) en werkt volgens heldere afspraken over planning, materialen en prijs. We leveren netjes op en staan voor de kwaliteit van ons werk.',
   },
 ]
 

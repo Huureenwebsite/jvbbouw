@@ -5,7 +5,7 @@ import { useContent } from '../lib/ContentProvider'
 export default function Footer() {
   const { company, services } = useContent()
   return (
-    <footer className="relative z-10 bg-deep pt-20 pb-10 text-white">
+    <footer className="relative z-10 bg-deep pt-20 pb-28 text-white lg:pb-10">
       <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">
         <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[2fr_1fr_1fr_1.4fr]">
           <div>
