@@ -1,8 +1,9 @@
 import { Link } from 'react-router-dom'
-import { company, services } from '../content'
 import { Logo } from './primitives'
+import { useContent } from '../lib/ContentProvider'
 
 export default function Footer() {
+  const { company, services } = useContent()
   return (
     <footer className="relative z-10 bg-deep pt-20 pb-10 text-white">
       <div className="mx-auto max-w-7xl px-6 sm:px-10 lg:px-16">

@@ -1,14 +1,15 @@
 import { useEffect } from 'react'
 import { useParams, Link, Navigate } from 'react-router-dom'
-import { services, company } from '../content'
 import { Icon, ArrowUpRight, ArrowRight, ArrowLeft, Phone, CheckCircle2 } from '../components/primitives'
 import { useSEO } from '../lib/useSEO'
+import { useContent } from '../lib/ContentProvider'
 import Navbar from '../components/Navbar'
 import Footer from '../components/Footer'
 
 const CONTAINER = 'mx-auto max-w-7xl px-6 sm:px-10 lg:px-16'
 
 export default function ServicePage() {
+  const { services, company } = useContent()
   const { slug } = useParams()
   const service = services.find((s) => s.slug === slug)
 

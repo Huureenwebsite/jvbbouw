@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-import { company, hero, services, pillars, protocol, trust, projects, contact, contactForm, seo, faq } from './content'
 import {
   Icon, CountUp, prefersReducedMotion,
   ArrowUpRight, ArrowRight, Phone, Mail, MapPin, Upload, CheckCircle2, X, ChevronDown,
 } from './components/primitives'
 import { useSEO } from './lib/useSEO'
+import { useContent } from './lib/ContentProvider'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Signature from './components/Signature'
@@ -20,6 +20,7 @@ const CONTAINER = 'mx-auto max-w-7xl px-6 sm:px-10 lg:px-16'
 
 /* ── Hero ─────────────────────────────────────────────── */
 function Hero() {
+  const { hero, company } = useContent()
   const ref = useRef(null)
   useEffect(() => {
     if (prefersReducedMotion) return
@@ -117,6 +118,7 @@ function Features() {
 
 /* ── Pillars (tellers) ────────────────────────────────── */
 function Pillars() {
+  const { pillars } = useContent()
   return (
     <section className="relative overflow-hidden py-8">
       <div className={CONTAINER}>
@@ -151,6 +153,7 @@ function Pillars() {
 
 /* ── Protocol (sticky-stack) ──────────────────────────── */
 function Protocol() {
+  const { protocol } = useContent()
   const ref = useRef(null)
   useEffect(() => {
     if (prefersReducedMotion) return
@@ -202,6 +205,7 @@ function Protocol() {
 
 /* ── ServicesGrid ─────────────────────────────────────── */
 function ServicesGrid() {
+  const { services } = useContent()
   const ref = useRef(null)
   useEffect(() => {
     if (prefersReducedMotion) return
@@ -250,6 +254,7 @@ function ServicesGrid() {
 
 /* ── Projects ─────────────────────────────────────────── */
 function Projects() {
+  const { projects } = useContent()
   const ref = useRef(null)
   useEffect(() => {
     if (prefersReducedMotion) return
@@ -288,6 +293,7 @@ function Projects() {
 
 /* ── TrustSignals ─────────────────────────────────────── */
 function TrustSignals() {
+  const { trust } = useContent()
   const ref = useRef(null)
   const [shown, setShown] = useState(false)
   useEffect(() => {
@@ -319,6 +325,7 @@ function TrustSignals() {
 
 /* ── FAQ (met FAQPage structured data) ────────────────── */
 function Faq() {
+  const { faq } = useContent()
   const [open, setOpen] = useState(0)
 
   useEffect(() => {
@@ -335,7 +342,7 @@ function Faq() {
     })
     document.head.appendChild(ld)
     return () => { document.head.removeChild(ld) }
-  }, [])
+  }, [faq])
 
   return (
     <section id="faq" className={`${CONTAINER} py-24 sm:py-32`}>
@@ -388,6 +395,7 @@ function Field({ label, type = 'text', name, textarea }) {
 }
 
 function ContactForm() {
+  const { company, contact, contactForm } = useContent()
   const [status, setStatus] = useState('idle') // 'idle' | 'sending' | 'sent' | 'error'
   const [files, setFiles] = useState([])
 
@@ -503,6 +511,7 @@ function ContactForm() {
 
 /* ── Page ─────────────────────────────────────────────── */
 export default function App() {
+  const { seo } = useContent()
   useSEO({ title: seo.title, description: seo.description, path: '/' })
 
   useEffect(() => {

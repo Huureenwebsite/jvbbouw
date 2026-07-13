@@ -1,9 +1,10 @@
 import { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { company, nav } from '../content'
 import { Logo, ArrowUpRight, Menu, X } from './primitives'
+import { useContent } from '../lib/ContentProvider'
 
 export default function Navbar() {
+  const { company, nav } = useContent()
   const [scrolled, setScrolled] = useState(false)
   const [open, setOpen] = useState(false)
 
