@@ -14,6 +14,7 @@ const structure = (S) =>
         .child(S.document().schemaType('siteSettings').documentId('siteSettings')),
       S.divider(),
       S.documentTypeListItem('service').title('Diensten'),
+      S.documentTypeListItem('processStep').title('Werkwijze'),
       S.documentTypeListItem('project').title('Projecten'),
       S.documentTypeListItem('review').title('Reviews'),
       S.documentTypeListItem('faqItem').title('Veelgestelde vragen'),

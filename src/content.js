@@ -198,7 +198,7 @@ export const protocol = [
     step: '02',
     eyebrow: 'Uitvoering',
     title: 'Vakkundig aan het werk',
-    text: 'Onze eigen vakmensen gaan aan de slag met kwaliteitsmaterialen. U blijft op de hoogte en houdt één vast aanspreekpunt.',
+    text: 'Ik ga vakkundig aan de slag met kwaliteitsmaterialen. U blijft op de hoogte en houdt één vast aanspreekpunt gedurende het hele project.',
     image: 'https://images.unsplash.com/photo-1673865641469-34498379d8af?q=80&w=1600&auto=format&fit=crop',
     alt: 'Vakman van JvB Bouw aan het werk tijdens een verbouwing',
   },

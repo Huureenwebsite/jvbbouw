@@ -17,6 +17,7 @@ const QUERY = `{
   "settings": *[_type == "siteSettings"][0],
   "services": *[_type == "service"] | order(order asc),
   "projects": *[_type == "project"] | order(order asc),
+  "protocol": *[_type == "processStep"] | order(order asc),
   "reviews": *[_type == "review"] | order(order asc),
   "faq": *[_type == "faqItem"] | order(order asc)
 }`
@@ -25,7 +26,7 @@ const QUERY = `{
 // Bij een lege/ontbrekende waarde blijft de fallback staan, zodat er nooit iets kapot gaat.
 export async function fetchCmsContent() {
   const data = await sanityClient.fetch(QUERY)
-  const { company, hero, contact, seo, services, projects, faq, person, reviews } = staticContent
+  const { company, hero, contact, seo, services, projects, protocol, faq, person, reviews } = staticContent
 
   const s = data.settings || {}
 
@@ -100,6 +101,21 @@ export async function fetchCmsContent() {
         })
       : projects
 
+  const mergedProtocol =
+    data.protocol?.length
+      ? data.protocol.map((doc, i) => {
+          const fallback = protocol[i] || {}
+          return {
+            step: doc.step || fallback.step,
+            eyebrow: doc.eyebrow || fallback.eyebrow,
+            title: doc.title || fallback.title,
+            text: doc.text || fallback.text,
+            image: urlFor(doc.image, 1600) || fallback.image,
+            alt: doc.alt || fallback.alt,
+          }
+        })
+      : protocol
+
   const mergedFaq =
     data.faq?.length ? data.faq.map((doc) => ({ q: doc.question, a: doc.answer })) : faq
 
@@ -130,6 +146,7 @@ export async function fetchCmsContent() {
     seo: mergedSeo,
     services: mergedServices,
     projects: mergedProjects,
+    protocol: mergedProtocol,
     faq: mergedFaq,
     person: mergedPerson,
     reviews: mergedReviews,
