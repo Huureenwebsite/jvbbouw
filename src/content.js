@@ -180,7 +180,7 @@ export const services = [
 ]
 
 export const pillars = [
-  { eyebrow: 'Ervaring', value: 10, suffix: '+', label: 'Jaar', text: 'Jaren vakmanschap in verbouwing, renovatie en onderhoud.' },
+  { eyebrow: 'Ervaring', value: 12, suffix: '+', label: 'Jaar', text: 'Jaren vakmanschap in verbouwing, renovatie en onderhoud.' },
   { eyebrow: 'Werkgebied', value: 35, suffix: 'km', label: 'Rondom Aalsmeer', text: 'Aalsmeer, Amstelveen, Uithoorn, Amsterdam, Hoofddorp, Haarlem, Mijdrecht en omstreken.' },
   { eyebrow: 'Aanpak', value: 1, suffix: ':1', label: 'Persoonlijk', text: 'Persoonlijk contact — u kent uw vakman van begin tot eind.' },
 ]

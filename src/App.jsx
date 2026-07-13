@@ -68,7 +68,7 @@ function Hero() {
           </a>
         </div>
         <div className="hero-meta mt-12 flex flex-wrap gap-x-10 gap-y-4">
-          {[['10+', 'Jaar ervaring'], ['100%', 'Eigen vakmensen'], ['A–Z', 'Eén aanspreekpunt']].map(([b, s]) => (
+          {[['12+', 'Jaar ervaring'], ['100%', 'Eigen werk'], ['A–Z', 'Eén aanspreekpunt']].map(([b, s]) => (
             <div key={s}>
               <div className="font-display text-3xl font-extrabold text-white">{b}</div>
               <div className="font-mono text-[11px] uppercase tracking-[0.14em] text-white/50">{s}</div>
