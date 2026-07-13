@@ -2,6 +2,7 @@ import {defineConfig} from 'sanity'
 import {structureTool} from 'sanity/structure'
 import {visionTool} from '@sanity/vision'
 import {schemaTypes} from './schemaTypes'
+import {StudioLayout} from './components/StudioLayout'
 
 // Overzichtelijke indeling voor de beheerder
 const structure = (S) =>
@@ -28,6 +29,10 @@ export default defineConfig({
   dataset: 'production',
 
   plugins: [structureTool({structure}), visionTool()],
+
+  studio: {
+    components: {layout: StudioLayout},
+  },
 
   schema: {
     types: schemaTypes,
