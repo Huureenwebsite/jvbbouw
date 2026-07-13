@@ -1,5 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
-  <rect width="64" height="64" rx="16" fill="#14161A"/>
-  <rect x="12" y="13" width="40" height="3" rx="1.5" fill="#C2A06B" opacity="0.75"/>
-  <text x="32" y="43" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="23" font-weight="800" fill="#C2A06B" text-anchor="middle" letter-spacing="-1">JvB</text>
-</svg>
