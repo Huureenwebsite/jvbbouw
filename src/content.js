@@ -297,12 +297,21 @@ export const person = {
   eyebrow: 'De vakman achter JvB Bouw',
   name: 'Jordy van Beek',
   role: 'Eigenaar & uw vaste aanspreekpunt',
-  text: 'Achter JvB Bouw staat Jordy van Beek — de J, v en B zeggen genoeg. U heeft bij ons geen anoniem bedrijf aan de lijn, maar één vakman die uw project van begin tot eind persoonlijk begeleidt. Korte lijnen, eerlijk advies en werk waar hij met zijn eigen naam voor staat.',
+  text: 'Ik ben Jordy van Beek — de J, v en B zeggen genoeg. Bij JvB Bouw heeft u geen anoniem bedrijf aan de lijn, maar mij: één vakman die uw project van begin tot eind persoonlijk aanpakt en begeleidt. Ik werk grotendeels zelf, met korte lijnen, eerlijk advies en werk waar ik met mijn eigen naam voor sta.',
   image: '', // leeg = merkpaneel i.p.v. foto; upload later een echte foto van Jordy
   alt: 'Jordy van Beek, eigenaar van JvB Bouw',
 }
 
-// Reviews — VOORBEELDEN. Vervang deze door echte reviews (bijv. van Google).
+// Google-reviews koppeling.
+// Vul featurableWidgetId in zodra de gratis Featurable-widget is aangemaakt en
+// gekoppeld aan het Google Bedrijfsprofiel van JvB Bouw. Dan verschijnen echte
+// Google-reviews automatisch (auto-sync). Leeg = toon de reviews hieronder.
+export const reviewsConfig = {
+  featurableWidgetId: '',
+  googleUrl: 'https://www.google.com/maps?cid=6713679187939780122',
+}
+
+// Reviews — worden gebruikt zolang er nog geen Google-koppeling is.
 export const reviews = [
   { name: 'Mark', place: 'Aalsmeer', rating: 5, text: 'Vakkundig werk en heldere communicatie. De verbouwing is strak opgeleverd en precies volgens afspraak.' },
   { name: 'Linda', place: 'Uithoorn', rating: 5, text: 'Onze badkamer is prachtig geworden. Netjes gewerkt en altijd één aanspreekpunt — echt een aanrader.' },

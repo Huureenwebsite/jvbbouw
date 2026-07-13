@@ -21,6 +21,7 @@ const initial = {
   trust: staticContent.trust,
   areasServed: staticContent.areasServed,
   contactForm: staticContent.contactForm,
+  reviewsConfig: staticContent.reviewsConfig,
 }
 
 const ContentContext = createContext(initial)

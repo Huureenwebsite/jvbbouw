@@ -372,32 +372,103 @@ function Person() {
   )
 }
 
-/* ── Reviews (schuivende balk) ─────────────────────────── */
+/* ── Reviews (schuivende balk, met Google-koppeling) ──── */
+function GoogleG({ className = '' }) {
+  return (
+    <svg viewBox="0 0 48 48" className={className} aria-hidden="true">
+      <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z" />
+      <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z" />
+      <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z" />
+      <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z" />
+    </svg>
+  )
+}
+
+function Stars({ n = 5, size = 'h-4 w-4' }) {
+  return (
+    <div className="flex gap-0.5 text-accent">
+      {Array.from({ length: 5 }).map((_, i) => (
+        <Star key={i} className={size} fill={i < Math.round(n) ? 'currentColor' : 'none'} strokeWidth={1.6} />
+      ))}
+    </div>
+  )
+}
+
 function ReviewCard({ r }) {
   return (
-    <figure className="w-80 flex-none rounded-3xl border border-divider bg-surface p-7 shadow-sm">
-      <div className="mb-3 flex gap-0.5 text-accent">
-        {Array.from({ length: 5 }).map((_, i) => (
-          <Star key={i} className="h-4 w-4" fill={i < r.rating ? 'currentColor' : 'none'} strokeWidth={1.6} />
-        ))}
+    <figure className="flex w-80 flex-none flex-col rounded-3xl border border-divider bg-surface p-7 shadow-sm">
+      <div className="mb-3 flex items-center justify-between">
+        <Stars n={r.rating} />
+        {r.source === 'google' && <GoogleG className="h-4 w-4" />}
       </div>
-      <blockquote className="leading-relaxed text-ink/80">{`“${r.text}”`}</blockquote>
-      <figcaption className="mt-4 font-display text-sm font-semibold">
-        {r.name} <span className="font-normal text-muted">· {r.place}</span>
+      <blockquote className="line-clamp-5 leading-relaxed text-ink/80">{`“${r.text}”`}</blockquote>
+      <figcaption className="mt-4 flex items-center gap-2.5">
+        {r.avatar ? (
+          <img src={r.avatar} alt="" referrerPolicy="no-referrer" className="h-8 w-8 flex-none rounded-full object-cover" />
+        ) : (
+          <span className="grid h-8 w-8 flex-none place-items-center rounded-full bg-primary/10 font-display text-xs font-bold text-primary">
+            {(r.name || '?').charAt(0)}
+          </span>
+        )}
+        <span className="font-display text-sm font-semibold">
+          {r.name}
+          {r.place ? <span className="font-normal text-muted"> · {r.place}</span> : null}
+        </span>
       </figcaption>
     </figure>
   )
 }
 
 function Reviews() {
-  const { reviews } = useContent()
+  const { reviews: cmsReviews, reviewsConfig } = useContent()
+  const [google, setGoogle] = useState(null)
+
+  useEffect(() => {
+    const id = reviewsConfig?.featurableWidgetId
+    if (!id) return
+    let active = true
+    fetch(`https://featurable.com/api/v1/widgets/${id}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject()))
+      .then((d) => { if (active) setGoogle(d) })
+      .catch(() => {})
+    return () => { active = false }
+  }, [reviewsConfig?.featurableWidgetId])
+
+  const googleReviews = (google?.reviews || [])
+    .filter((x) => x.comment || x.text)
+    .map((x) => ({
+      name: x.reviewer?.displayName || x.name || 'Google-gebruiker',
+      rating: typeof x.starRating === 'number' ? x.starRating : 5,
+      text: x.comment || x.text,
+      avatar: x.reviewer?.profilePhotoUrl || x.profilePhotoUrl,
+      source: 'google',
+    }))
+
+  const isGoogle = googleReviews.length > 0
+  const reviews = isGoogle ? googleReviews : cmsReviews
   if (!reviews?.length) return null
-  const loop = [...reviews, ...reviews] // dubbel voor een naadloze loop
+  const loop = reviews.length < 4 ? [...reviews, ...reviews, ...reviews] : [...reviews, ...reviews]
+  const avg = google?.averageRating
+  const total = google?.totalReviewCount || googleReviews.length
+
   return (
     <section className="overflow-hidden py-24 sm:py-32">
       <div className={`${CONTAINER} mb-12 text-center`}>
         <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">Wat klanten zeggen</p>
         <h2 className="mt-3 font-display text-3xl font-extrabold tracking-tight sm:text-5xl">Tevreden opdrachtgevers</h2>
+        {isGoogle && (
+          <div className="mt-6 inline-flex flex-wrap items-center justify-center gap-4">
+            <span className="inline-flex items-center gap-2 rounded-full border border-divider bg-surface px-4 py-2 text-sm font-semibold">
+              <GoogleG className="h-4 w-4" />
+              {avg ? avg.toFixed(1) : ''}
+              <Stars n={avg || 5} size="h-3.5 w-3.5" />
+              <span className="font-normal text-muted">· {total} Google-reviews</span>
+            </span>
+            <a href={reviewsConfig.googleUrl} target="_blank" rel="noreferrer" className="text-sm font-medium text-primary hover:underline">
+              Bekijk op Google
+            </a>
+          </div>
+        )}
       </div>
       <div className="relative">
         <div className="marquee flex w-max gap-6 px-3">
