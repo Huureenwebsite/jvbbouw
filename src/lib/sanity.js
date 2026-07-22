@@ -6,7 +6,9 @@ export const sanityClient = createClient({
   projectId: 'xy8q4pjk',
   dataset: 'production',
   apiVersion: '2024-01-01',
-  useCdn: true,
+  // false = altijd de laatst gepubliceerde content (geen CDN-cache),
+  // zodat wijzigingen direct na "Publish" op de site verschijnen.
+  useCdn: false,
 })
 
 const builder = imageUrlBuilder(sanityClient)

@@ -53,11 +53,17 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="mt-16 flex flex-col items-start justify-between gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row sm:items-center">
+        <div className="mt-16 flex flex-col gap-3 border-t border-white/10 pt-6 text-xs text-white/45 sm:flex-row sm:items-center sm:justify-between">
           <span>© {new Date().getFullYear()} {company.name}. Alle rechten voorbehouden.</span>
-          <div className="flex gap-5">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
             <Link to="/privacy" className="hover:text-white/80">Privacy</Link>
             <Link to="/terms" className="hover:text-white/80">Voorwaarden</Link>
+            <span className="text-white/40">
+              Website door{' '}
+              <a href="https://www.huureenwebsite.nl" target="_blank" rel="noreferrer" className="font-semibold text-white/70 transition-colors hover:text-white">
+                HuurEenWebsite.nl
+              </a>
+            </span>
           </div>
         </div>
       </div>

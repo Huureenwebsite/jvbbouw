@@ -111,7 +111,7 @@ function Features() {
   }, [])
 
   const cards = [
-    { eyebrow: 'Portfolio', title: 'Werk dat blijft staan', text: 'Van badkamer tot dakkapel — bekijk een greep uit recente projecten in de regio.', widget: <Shuffler /> },
+    { eyebrow: 'Projecten', href: '#projecten', title: 'Werk dat blijft staan', text: 'Van badkamer tot dakkapel — bekijk een greep uit recente projecten in de regio.', widget: <Shuffler /> },
     { eyebrow: 'Vakwerk', title: 'Strak tot in het detail', text: 'Constructie, afwerking en installatie in één hand. Netjes, waterdicht en volgens plan.', widget: <Signature /> },
     { eyebrow: 'Planning', title: 'Duidelijk ingepland', text: 'Heldere afspraken en een realistische planning — u weet altijd waar u aan toe bent.', widget: <Planner /> },
   ]
@@ -119,14 +119,25 @@ function Features() {
   return (
     <section ref={ref} className={`${CONTAINER} py-24 sm:py-32`}>
       <div className="grid grid-cols-1 gap-6 lg:grid-cols-3">
-        {cards.map((c) => (
-          <div key={c.title} className="feature-card rounded-3xl border border-divider bg-surface p-6 sm:p-8">
-            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">{c.eyebrow}</p>
-            <h3 className="mb-5 mt-1.5 font-display text-xl font-bold sm:text-2xl">{c.title}</h3>
-            {c.widget}
-            <p className="mt-5 text-sm leading-relaxed text-muted">{c.text}</p>
-          </div>
-        ))}
+        {cards.map((c) => {
+          const inner = (
+            <>
+              <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">{c.eyebrow}</p>
+              <h3 className="mb-5 mt-1.5 font-display text-xl font-bold sm:text-2xl">{c.title}</h3>
+              {c.widget}
+              <p className="mt-5 text-sm leading-relaxed text-muted">{c.text}</p>
+            </>
+          )
+          return c.href ? (
+            <a key={c.title} href={c.href} className="feature-card group block rounded-3xl border border-divider bg-surface p-6 transition-all hover:-translate-y-1 hover:border-primary-light hover:shadow-lg sm:p-8">
+              {inner}
+            </a>
+          ) : (
+            <div key={c.title} className="feature-card rounded-3xl border border-divider bg-surface p-6 sm:p-8">
+              {inner}
+            </div>
+          )
+        })}
       </div>
     </section>
   )
@@ -191,7 +202,7 @@ function Protocol() {
       <div className={`${CONTAINER} mb-14`}>
         <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-primary">Werkwijze</p>
         <h2 className="mt-3 max-w-2xl font-display text-3xl font-extrabold tracking-tight sm:text-5xl">
-          Van eerste schets tot nette oplevering
+          Van eerste gesprek tot nette oplevering
         </h2>
       </div>
 
@@ -692,8 +703,8 @@ export default function App() {
         <Projects />
         <Reviews />
         <TrustSignals />
-        <Faq />
         <ContactForm />
+        <Faq />
       </main>
       <Footer />
     </div>

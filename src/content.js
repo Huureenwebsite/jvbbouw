@@ -150,7 +150,7 @@ export const services = [
     metaDescription:
       'Complete badkamerrenovatie in Aalsmeer en omstreken door één partij: ontwerp, sloop, tegelwerk, sanitair en installatie. JvB Bouw levert strak op. Vraag een offerte aan.',
     intro:
-      'Een complete badkamer van A tot Z in Aalsmeer, uitgevoerd door één partij. Van het uitbreken tot het laatste voegwerk — u heeft één aanspreekpunt en een strak eindresultaat.',
+      'Een complete badkamer van A tot Z, uitgevoerd door één partij. Van het uitbreken tot het laatste voegwerk — u heeft één aanspreekpunt en een strak eindresultaat.',
     points: [
       'Ontwerp en materiaaladvies',
       'Sloop, leidingwerk en installatie',
@@ -172,7 +172,7 @@ export const services = [
       'Een dakkapel geeft uw zolder in Aalsmeer in één keer meer licht, ruimte en hoofdhoogte. Wij plaatsen vakkundig en werken netjes en waterdicht af, met minimale overlast.',
     points: [
       'Advies over formaat en plaatsing',
-      'Prefab of op maat gebouwd',
+      'Op maat gebouwd',
       'Waterdichte, geïsoleerde afwerking',
       'Meestal binnen één dag geplaatst',
     ],
