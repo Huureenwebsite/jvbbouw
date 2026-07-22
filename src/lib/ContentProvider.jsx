@@ -11,6 +11,7 @@ const initial = {
   seo: staticContent.seo,
   services: staticContent.services,
   projects: staticContent.projects,
+  slider: staticContent.slider,
   faq: staticContent.faq,
   person: staticContent.person,
   reviews: staticContent.reviews,

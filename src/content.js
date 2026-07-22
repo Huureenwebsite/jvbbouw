@@ -249,6 +249,13 @@ export const projects = [
   },
 ]
 
+// Homepage "Project slider" (de draaiende foto-stapel in de eerste tegel)
+export const slider = [
+  { tag: 'Badkamer · Uithoorn', img: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=800&auto=format&fit=crop' },
+  { tag: 'Dakkapel · Mijdrecht', img: 'https://images.unsplash.com/photo-1627141234469-24711efb373c?q=80&w=800&auto=format&fit=crop' },
+  { tag: 'Verbouwing · Aalsmeer', img: 'https://images.unsplash.com/photo-1593012671976-1422185230fb?q=80&w=800&auto=format&fit=crop' },
+]
+
 export const contact = {
   eyebrow: 'Contact',
   title: 'Plan uw project',

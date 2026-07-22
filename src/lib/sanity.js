@@ -27,6 +27,7 @@ const QUERY = `{
   "settings": *[_type == "siteSettings"][0],
   "services": *[_type == "service"] | order(order asc),
   "projects": *[_type == "project"] | order(order asc),
+  "slider": *[_type == "projectSlider"] | order(order asc),
   "protocol": *[_type == "processStep"] | order(order asc),
   "reviews": *[_type == "review"] | order(order asc),
   "faq": *[_type == "faqItem"] | order(order asc)
@@ -36,7 +37,7 @@ const QUERY = `{
 // Bij een lege/ontbrekende waarde blijft de fallback staan, zodat er nooit iets kapot gaat.
 export async function fetchCmsContent() {
   const data = await sanityClient.fetch(QUERY)
-  const { company, hero, contact, seo, services, projects, protocol, faq, person, reviews } = staticContent
+  const { company, hero, contact, seo, services, projects, slider, protocol, faq, person, reviews } = staticContent
 
   const s = data.settings || {}
 
@@ -126,6 +127,14 @@ export async function fetchCmsContent() {
         })
       : protocol
 
+  const mergedSlider =
+    data.slider?.length
+      ? data.slider.map((doc, i) => ({
+          tag: doc.tag || slider[i]?.tag,
+          img: urlFor(doc.image, 900) || slider[i]?.img,
+        }))
+      : slider
+
   const mergedFaq =
     data.faq?.length ? data.faq.map((doc) => ({ q: doc.question, a: doc.answer })) : faq
 
@@ -156,6 +165,7 @@ export async function fetchCmsContent() {
     seo: mergedSeo,
     services: mergedServices,
     projects: mergedProjects,
+    slider: mergedSlider,
     protocol: mergedProtocol,
     faq: mergedFaq,
     person: mergedPerson,

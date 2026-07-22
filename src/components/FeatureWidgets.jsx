@@ -1,14 +1,11 @@
 import { useEffect, useState } from 'react'
 import { CheckCircle2 } from './primitives'
+import { useContent } from '../lib/ContentProvider'
 
-// ── Kaart 1: gestapelde project-shuffler ─────────────────────
-const CARDS = [
-  { tag: 'Badkamer · Uithoorn', img: 'https://images.unsplash.com/photo-1620626011761-996317b8d101?q=80&w=800&auto=format&fit=crop' },
-  { tag: 'Dakkapel · Mijdrecht', img: 'https://images.unsplash.com/photo-1627141234469-24711efb373c?q=80&w=800&auto=format&fit=crop' },
-  { tag: 'Verbouwing · Aalsmeer', img: 'https://images.unsplash.com/photo-1593012671976-1422185230fb?q=80&w=800&auto=format&fit=crop' },
-]
-
+// ── Kaart 1: gestapelde project-shuffler (beheerbaar via "Project slider") ──
 export function Shuffler() {
+  const { slider } = useContent()
+  const slides = (slider?.length ? slider : []).slice(0, 3)
   const [order, setOrder] = useState([0, 1, 2])
 
   useEffect(() => {
@@ -26,7 +23,8 @@ export function Shuffler() {
     <div className="relative h-44">
       {order.map((cardIdx, pos) => {
         const s = styles[pos]
-        const c = CARDS[cardIdx]
+        const c = slides[cardIdx]
+        if (!c) return null
         return (
           <div
             key={cardIdx}
@@ -55,8 +53,19 @@ export function Shuffler() {
 // ── Kaart 3: planner met bewegende cursor ────────────────────
 const DAYS = ['M', 'D', 'W', 'D', 'V', 'Z', 'Z']
 
+// Huidig ISO-weeknummer (de werkelijke werkweek) — verandert vanzelf elke week
+function currentIsoWeek() {
+  const d = new Date()
+  const t = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()))
+  const day = t.getUTCDay() || 7
+  t.setUTCDate(t.getUTCDate() + 4 - day)
+  const yearStart = new Date(Date.UTC(t.getUTCFullYear(), 0, 1))
+  return Math.ceil(((t - yearStart) / 86400000 + 1) / 7)
+}
+
 export function Planner() {
   const [phase, setPhase] = useState(0) // 0..4 loop
+  const week = currentIsoWeek()
 
   useEffect(() => {
     const id = setInterval(() => setPhase((p) => (p + 1) % 5), 1400)
