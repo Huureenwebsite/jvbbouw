@@ -1,19 +1,27 @@
 import { createClient } from '@sanity/client'
-import imageUrlBuilder from '@sanity/image-url'
 import * as staticContent from '../content'
 
+const PROJECT_ID = 'xy8q4pjk'
+const DATASET = 'production'
+
 export const sanityClient = createClient({
-  projectId: 'xy8q4pjk',
-  dataset: 'production',
+  projectId: PROJECT_ID,
+  dataset: DATASET,
   apiVersion: '2024-01-01',
   // false = altijd de laatst gepubliceerde content (geen CDN-cache),
   // zodat wijzigingen direct na "Publish" op de site verschijnen.
   useCdn: false,
 })
 
-const builder = imageUrlBuilder(sanityClient)
-const urlFor = (source, w = 1600) =>
-  source ? builder.image(source).width(w).auto('format').fit('max').url() : null
+// Bouwt de afbeeldings-URL rechtstreeks uit de Sanity asset-referentie.
+// Betrouwbaarder dan de image-url builder en zonder extra dependency.
+const urlFor = (source, w = 1600) => {
+  const ref = source?.asset?._ref || (typeof source === 'string' ? source : null)
+  const m = /^image-([a-f0-9]+)-(\d+x\d+)-(\w+)$/.exec(ref || '')
+  if (!m) return null
+  const [, id, dims, ext] = m
+  return `https://cdn.sanity.io/images/${PROJECT_ID}/${DATASET}/${id}-${dims}.${ext}?w=${w}&auto=format&fit=max&q=80`
+}
 
 const QUERY = `{
   "settings": *[_type == "siteSettings"][0],
