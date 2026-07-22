@@ -79,7 +79,7 @@ export function Planner() {
     <div className="relative h-44 overflow-hidden rounded-3xl border border-divider bg-surface p-4">
       <div className="mb-2 flex items-center justify-between">
         <span className="font-mono text-[10px] uppercase tracking-[0.16em] text-muted">Planning</span>
-        <span className="font-mono text-[10px] text-primary">Week 24</span>
+        <span className="font-mono text-[10px] text-primary">Week {week}</span>
       </div>
 
       <div className="grid grid-cols-7 gap-1.5">
