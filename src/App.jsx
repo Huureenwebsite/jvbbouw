@@ -16,6 +16,12 @@ import { Shuffler, Planner } from './components/FeatureWidgets'
 
 gsap.registerPlugin(ScrollTrigger)
 
+// Sanity-afbeeldingen laden na de eerste render en verschuiven de pagina;
+// posities opnieuw berekenen zodat geen enkele sectie onzichtbaar blijft staan.
+if (typeof window !== 'undefined') {
+  window.addEventListener('load', () => ScrollTrigger.refresh())
+}
+
 const CONTAINER = 'mx-auto max-w-7xl px-6 sm:px-10 lg:px-16'
 
 /* ── Hero ─────────────────────────────────────────────── */
@@ -102,10 +108,13 @@ function Features() {
   useEffect(() => {
     if (prefersReducedMotion) return
     const ctx = gsap.context(() => {
-      gsap.from('.feature-card', {
-        scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
-        y: 40, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
-      })
+      gsap.fromTo('.feature-card',
+        { y: 40, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
+          y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+          clearProps: 'opacity,transform',
+        })
     }, ref)
     return () => ctx.revert()
   }, [])
@@ -237,10 +246,13 @@ function ServicesGrid() {
   useEffect(() => {
     if (prefersReducedMotion) return
     const ctx = gsap.context(() => {
-      gsap.from('.svc-tile', {
-        scrollTrigger: { trigger: ref.current, start: 'top 78%', once: true },
-        y: 30, opacity: 0, duration: 0.7, stagger: 0.08, ease: 'power3.out',
-      })
+      gsap.fromTo('.svc-tile',
+        { y: 30, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ref.current, start: 'top 78%', once: true },
+          y: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: 'power3.out',
+          clearProps: 'opacity,transform',
+        })
     }, ref)
     return () => ctx.revert()
   }, [])
@@ -280,19 +292,40 @@ function ServicesGrid() {
 }
 
 /* ── Projects ─────────────────────────────────────────── */
+const PROJECTS_VISIBLE = 4 // eerste rij(en); de rest achter "Bekijk meer projecten"
+
 function Projects() {
   const { projects } = useContent()
   const ref = useRef(null)
+  const [showAll, setShowAll] = useState(false)
+
+  const visible = showAll ? projects : projects.slice(0, PROJECTS_VISIBLE)
+  const hidden = Math.max(projects.length - PROJECTS_VISIBLE, 0)
+
   useEffect(() => {
     if (prefersReducedMotion) return
     const ctx = gsap.context(() => {
-      gsap.from('.proj-card', {
-        scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
-        y: 36, opacity: 0, duration: 0.8, stagger: 0.15, ease: 'power3.out',
-      })
+      gsap.fromTo('.proj-card',
+        { y: 36, opacity: 0 },
+        {
+          scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
+          y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
+          clearProps: 'opacity,transform',
+        })
     }, ref)
     return () => ctx.revert()
   }, [])
+
+  // laat de zojuist getoonde projecten netjes invliegen
+  useEffect(() => {
+    if (!showAll || prefersReducedMotion) return
+    const extra = ref.current?.querySelectorAll('.proj-card-extra')
+    if (extra?.length) {
+      gsap.fromTo(extra,
+        { y: 28, opacity: 0 },
+        { y: 0, opacity: 1, duration: 0.7, stagger: 0.12, ease: 'power3.out', clearProps: 'opacity,transform' })
+    }
+  }, [showAll])
 
   return (
     <section id="projecten" ref={ref} className={`${CONTAINER} py-24 sm:py-32`}>
@@ -303,8 +336,8 @@ function Projects() {
         </h2>
       </div>
       <div className="grid gap-6 md:grid-cols-2">
-        {projects.map((p) => (
-          <Link key={p.slug || p.title} to={p.slug ? `/projecten/${p.slug}` : '#'} className="proj-card group relative block aspect-[16/11] overflow-hidden rounded-3xl">
+        {visible.map((p, i) => (
+          <Link key={p.slug || p.title} to={p.slug ? `/projecten/${p.slug}` : '#'} className={`proj-card${i >= PROJECTS_VISIBLE ? ' proj-card-extra' : ''} group relative block aspect-[16/11] overflow-hidden rounded-3xl`}>
             <img src={p.image} alt={p.alt} loading="lazy" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-deep/85 via-deep/10 to-transparent" />
             <div className="absolute inset-x-0 bottom-0 p-7">
@@ -317,6 +350,19 @@ function Projects() {
           </Link>
         ))}
       </div>
+
+      {hidden > 0 && !showAll && (
+        <div className="mt-12 flex justify-center">
+          <button
+            type="button"
+            onClick={() => setShowAll(true)}
+            className="magnetic-btn inline-flex items-center gap-2 rounded-full border border-divider bg-surface px-7 py-3.5 font-semibold text-ink transition-colors hover:border-primary/40 hover:text-primary"
+          >
+            Bekijk meer projecten
+            <ChevronDown className="h-4 w-4" />
+          </button>
+        </div>
+      )}
     </section>
   )
 }
