@@ -26,11 +26,14 @@ const CONTAINER = 'mx-auto max-w-7xl px-6 sm:px-10 lg:px-16'
 
 /**
  * Reveal-on-scroll via IntersectionObserver in plaats van ScrollTrigger.
- * ScrollTrigger raakt op deze pagina in de war (body heeft overflow-x: hidden en
- * html scroll-behavior: smooth), waardoor tegels soms permanent op opacity 0
- * bleven staan — dan lijkt een blok van de site verdwenen.
- * De elementen worden pas verborgen als er ook echt geanimeerd kan worden, en bij
- * opruimen wordt alles teruggezet, zodat er nooit iets onzichtbaar achterblijft.
+ *
+ * Belangrijk: animaties draaien op requestAnimationFrame, en die staat stil
+ * zolang het tabblad niet zichtbaar is. Laadt de site in een achtergrond-tab,
+ * dan bevriest een tegel op opacity 0 en lijkt hij verdwenen. Daarom:
+ * - niet animeren maar direct tonen als de pagina verborgen is;
+ * - een lopende animatie meteen afronden zodra de pagina verborgen raakt;
+ * - bij opruimen alles terugzetten.
+ * Er kan dus nooit iets onzichtbaar achterblijven.
  */
 function useReveal(ref, selector, { y = 32, stagger = 0.12, duration = 0.75 } = {}) {
   useEffect(() => {
@@ -39,12 +42,21 @@ function useReveal(ref, selector, { y = 32, stagger = 0.12, duration = 0.75 } = 
     const els = Array.from(root.querySelectorAll(selector))
     if (!els.length) return
 
+    const show = () => {
+      gsap.killTweensOf(els)
+      gsap.set(els, { clearProps: 'opacity,transform' })
+    }
+
+    // pagina verborgen? dan meteen tonen zonder animatie
+    if (document.hidden) return
+
     gsap.set(els, { y, opacity: 0 })
 
     let played = false
     const play = () => {
       if (played) return
       played = true
+      if (document.hidden) return show()
       gsap.to(els, {
         y: 0, opacity: 1, duration, stagger, ease: 'power3.out',
         clearProps: 'opacity,transform',
@@ -57,10 +69,14 @@ function useReveal(ref, selector, { y = 32, stagger = 0.12, duration = 0.75 } = 
     )
     io.observe(root)
 
+    // tabblad naar de achtergrond tijdens de animatie: direct afronden
+    const onHide = () => { if (document.hidden) { io.disconnect(); show() } }
+    document.addEventListener('visibilitychange', onHide)
+
     return () => {
       io.disconnect()
-      gsap.killTweensOf(els)
-      gsap.set(els, { clearProps: 'opacity,transform' })
+      document.removeEventListener('visibilitychange', onHide)
+      show()
     }
   }, [ref, selector])
 }
@@ -70,13 +86,17 @@ function Hero() {
   const { hero, company } = useContent()
   const ref = useRef(null)
   useEffect(() => {
-    if (prefersReducedMotion) return
+    // laadt de pagina in een achtergrond-tab, dan staat rAF stil en zou de hero
+    // op onzichtbaar blijven hangen — dan liever meteen tonen zonder animatie
+    if (prefersReducedMotion || document.hidden) return
     const ctx = gsap.context(() => {
       gsap.from('.hero-line-1', { y: 40, opacity: 0, duration: 1, delay: 0.3, ease: 'power3.out' })
       gsap.from('.hero-line-2', { y: 60, opacity: 0, duration: 1.2, delay: 0.5, ease: 'power3.out' })
       gsap.from('.hero-cta, .hero-meta, .hero-eyebrow', { y: 24, opacity: 0, duration: 0.8, delay: 0.85, stagger: 0.12, ease: 'power3.out' })
     }, ref)
-    return () => ctx.revert()
+    const onHide = () => { if (document.hidden) ctx.revert() }
+    document.addEventListener('visibilitychange', onHide)
+    return () => { document.removeEventListener('visibilitychange', onHide); ctx.revert() }
   }, [])
 
   return (
