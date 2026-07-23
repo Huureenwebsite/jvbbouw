@@ -24,6 +24,47 @@ if (typeof window !== 'undefined') {
 
 const CONTAINER = 'mx-auto max-w-7xl px-6 sm:px-10 lg:px-16'
 
+/**
+ * Reveal-on-scroll via IntersectionObserver in plaats van ScrollTrigger.
+ * ScrollTrigger raakt op deze pagina in de war (body heeft overflow-x: hidden en
+ * html scroll-behavior: smooth), waardoor tegels soms permanent op opacity 0
+ * bleven staan — dan lijkt een blok van de site verdwenen.
+ * De elementen worden pas verborgen als er ook echt geanimeerd kan worden, en bij
+ * opruimen wordt alles teruggezet, zodat er nooit iets onzichtbaar achterblijft.
+ */
+function useReveal(ref, selector, { y = 32, stagger = 0.12, duration = 0.75 } = {}) {
+  useEffect(() => {
+    const root = ref.current
+    if (!root || prefersReducedMotion) return
+    const els = Array.from(root.querySelectorAll(selector))
+    if (!els.length) return
+
+    gsap.set(els, { y, opacity: 0 })
+
+    let played = false
+    const play = () => {
+      if (played) return
+      played = true
+      gsap.to(els, {
+        y: 0, opacity: 1, duration, stagger, ease: 'power3.out',
+        clearProps: 'opacity,transform',
+      })
+    }
+
+    const io = new IntersectionObserver(
+      (entries) => { if (entries.some((e) => e.isIntersecting)) { play(); io.disconnect() } },
+      { rootMargin: '0px 0px -12% 0px', threshold: 0 },
+    )
+    io.observe(root)
+
+    return () => {
+      io.disconnect()
+      gsap.killTweensOf(els)
+      gsap.set(els, { clearProps: 'opacity,transform' })
+    }
+  }, [ref, selector])
+}
+
 /* ── Hero ─────────────────────────────────────────────── */
 function Hero() {
   const { hero, company } = useContent()
@@ -105,19 +146,7 @@ function TrustStrip() {
 /* ── Features (3 interactieve kaarten) ────────────────── */
 function Features() {
   const ref = useRef(null)
-  useEffect(() => {
-    if (prefersReducedMotion) return
-    const ctx = gsap.context(() => {
-      gsap.fromTo('.feature-card',
-        { y: 40, opacity: 0 },
-        {
-          scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
-          y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
-          clearProps: 'opacity,transform',
-        })
-    }, ref)
-    return () => ctx.revert()
-  }, [])
+  useReveal(ref, '.feature-card', { y: 40, stagger: 0.15, duration: 0.8 })
 
   const cards = [
     { eyebrow: 'Projecten', href: '#projecten', title: 'Werk dat blijft staan', text: 'Van badkamer tot dakkapel — bekijk een greep uit recente projecten in de regio.', widget: <Shuffler /> },
@@ -138,7 +167,7 @@ function Features() {
             </>
           )
           return c.href ? (
-            <a key={c.title} href={c.href} className="feature-card group block rounded-3xl border border-divider bg-surface p-6 transition-all hover:-translate-y-1 hover:border-primary-light hover:shadow-lg sm:p-8">
+            <a key={c.title} href={c.href} className="feature-card group block rounded-3xl border border-divider bg-surface p-6 transition-[border-color,box-shadow] duration-300 hover:border-primary-light hover:shadow-lg sm:p-8">
               {inner}
             </a>
           ) : (
@@ -243,19 +272,7 @@ function Protocol() {
 function ServicesGrid() {
   const { services } = useContent()
   const ref = useRef(null)
-  useEffect(() => {
-    if (prefersReducedMotion) return
-    const ctx = gsap.context(() => {
-      gsap.fromTo('.svc-tile',
-        { y: 30, opacity: 0 },
-        {
-          scrollTrigger: { trigger: ref.current, start: 'top 78%', once: true },
-          y: 0, opacity: 1, duration: 0.7, stagger: 0.08, ease: 'power3.out',
-          clearProps: 'opacity,transform',
-        })
-    }, ref)
-    return () => ctx.revert()
-  }, [])
+  useReveal(ref, '.svc-tile', { y: 30, stagger: 0.08, duration: 0.7 })
 
   return (
     <section id="diensten" ref={ref} className="bg-deep py-24 text-white sm:py-32">
@@ -302,19 +319,7 @@ function Projects() {
   const visible = showAll ? projects : projects.slice(0, PROJECTS_VISIBLE)
   const hidden = Math.max(projects.length - PROJECTS_VISIBLE, 0)
 
-  useEffect(() => {
-    if (prefersReducedMotion) return
-    const ctx = gsap.context(() => {
-      gsap.fromTo('.proj-card',
-        { y: 36, opacity: 0 },
-        {
-          scrollTrigger: { trigger: ref.current, start: 'top 80%', once: true },
-          y: 0, opacity: 1, duration: 0.8, stagger: 0.15, ease: 'power3.out',
-          clearProps: 'opacity,transform',
-        })
-    }, ref)
-    return () => ctx.revert()
-  }, [])
+  useReveal(ref, '.proj-card', { y: 36, stagger: 0.15, duration: 0.8 })
 
   // laat de zojuist getoonde projecten netjes invliegen
   useEffect(() => {
