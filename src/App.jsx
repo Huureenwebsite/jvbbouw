@@ -5,7 +5,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 import {
   Icon, CountUp, prefersReducedMotion,
-  ArrowUpRight, ArrowRight, Phone, Mail, MapPin, Upload, CheckCircle2, X, ChevronDown, Star,
+  ArrowUpRight, ArrowRight, Phone, Mail, MapPin, CheckCircle2, ChevronDown, Star,
 } from './components/primitives'
 import { useSEO } from './lib/useSEO'
 import { useContent } from './lib/ContentProvider'
@@ -634,27 +634,19 @@ function Field({ label, type = 'text', name, textarea }) {
   )
 }
 
-const MAX_FILE_MB = 8 // per foto; grotere bestanden weigert Formspree
-const MAX_FILES = 5
-
 function ContactForm() {
   const { company, contact, contactForm } = useContent()
   const [status, setStatus] = useState('idle') // 'idle' | 'sending' | 'sent' | 'error'
-  const [files, setFiles] = useState([])
-  const [fileNote, setFileNote] = useState('')
   const [errorText, setErrorText] = useState('')
 
+  // Let op: bijlagen meesturen vereist een betaald Formspree-pakket. Zolang dat
+  // er niet is, vragen we bezoekers hun foto's per mail te sturen.
   const onSubmit = async (e) => {
     e.preventDefault()
     const form = e.currentTarget
     const data = new FormData(form)
     if (data.get('_gotcha')) return // honeypot: spam-bot ingevuld
     data.append('_subject', 'Nieuwe aanvraag via jvbbouw.nl')
-
-    // Foto's meesturen. Het bestandsveld zelf heeft bewust geen name-attribuut:
-    // FormData zou dan de ruwe selectie pakken, terwijl de bezoeker er intussen
-    // foto's uit verwijderd kan hebben. Daarom sturen we exact wat in beeld staat.
-    files.forEach((f, i) => data.append(`foto-${i + 1}`, f, f.name))
 
     setStatus('sending')
     setErrorText('')
@@ -685,22 +677,6 @@ function ContactForm() {
       setErrorText(err?.message || '')
       setStatus('error')
     }
-  }
-
-  const addFiles = (list) => {
-    const picked = [...list]
-    const images = picked.filter((f) => f.type.startsWith('image/'))
-    const passen = images.filter((f) => f.size <= MAX_FILE_MB * 1024 * 1024)
-
-    if (picked.length > images.length) setFileNote('Alleen foto’s kunnen worden meegestuurd.')
-    else if (images.length > passen.length) setFileNote(`Foto’s groter dan ${MAX_FILE_MB} MB zijn overgeslagen.`)
-    else setFileNote('')
-
-    setFiles((prev) => {
-      const volgend = [...prev, ...passen].slice(0, MAX_FILES)
-      if (prev.length + passen.length > MAX_FILES) setFileNote(`Maximaal ${MAX_FILES} foto’s.`)
-      return volgend
-    })
   }
 
   return (
@@ -740,37 +716,12 @@ function ContactForm() {
               </div>
               <Field label="Uw project" name="bericht" textarea />
 
-              <div
-                onDragOver={(e) => e.preventDefault()}
-                onDrop={(e) => { e.preventDefault(); addFiles(e.dataTransfer.files) }}
-                className="flex cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed border-white/20 py-6 text-center transition hover:border-primary/50"
-                onClick={() => document.getElementById('file-in').click()}
-              >
-                <Upload className="mb-2 h-5 w-5 text-white/50" />
-                <span className="font-mono text-[11px] text-white/50">Sleep foto’s hierheen of klik (max. {MAX_FILES}, tot {MAX_FILE_MB} MB per foto)</span>
-                <input
-                  id="file-in"
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  className="hidden"
-                  onChange={(e) => { addFiles(e.target.files); e.target.value = '' }}
-                />
-              </div>
-              {files.length > 0 && (
-                <div className="flex flex-wrap gap-2">
-                  {files.map((f, i) => (
-                    <span key={`${f.name}-${i}`} className="inline-flex items-center gap-1.5 rounded-full bg-white/10 px-3 py-1 font-mono text-[11px] text-white/70">
-                      {f.name.length > 18 ? `${f.name.slice(0, 18)}…` : f.name}
-                      <span className="text-white/40">{(f.size / (1024 * 1024)).toFixed(1)} MB</span>
-                      <button type="button" aria-label={`${f.name} verwijderen`} onClick={() => { setFiles(files.filter((_, j) => j !== i)); setFileNote('') }}>
-                        <X className="h-3 w-3" />
-                      </button>
-                    </span>
-                  ))}
-                </div>
-              )}
-              {fileNote && <p className="font-mono text-[11px] text-amber-300/80">{fileNote}</p>}
+              <p className="rounded-xl border border-dashed border-white/20 px-4 py-3 text-center font-mono text-[11px] leading-relaxed text-white/50">
+                Foto’s van uw project?{' '}
+                <a href={`mailto:${company.email}?subject=Foto%27s%20bij%20mijn%20aanvraag`} className="text-accent underline underline-offset-2">
+                  Mail ze naar {company.email}
+                </a>
+              </p>
 
               {status === 'error' && (
                 <p className="rounded-xl bg-red-500/10 px-4 py-3 text-center text-sm text-red-300">
