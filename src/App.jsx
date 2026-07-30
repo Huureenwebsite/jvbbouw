@@ -638,7 +638,7 @@ function Field({ label, type = 'text', name, textarea }) {
 // Vul het conversielabel in dat Google Ads geeft bij de conversieactie
 // (Doelen > Conversies > nieuwe actie). Vorm: 'AW-18216312295/AbCdEfGhIjK'.
 // Zolang dit leeg is, telt de tag nog geen conversie (verder werkt alles gewoon).
-const ADS_CONVERSION_SEND_TO = '' // TODO: label invullen, bv. 'AW-18216312295/XXXXXXXX'
+const ADS_CONVERSION_SEND_TO = 'AW-18216312295/nmaICJ-K17wcEOe7m-5D' // conversieactie "Offerte aanvragen"
 
 function fireAdsConversion() {
   if (typeof window !== 'undefined' && typeof window.gtag === 'function' && ADS_CONVERSION_SEND_TO) {
