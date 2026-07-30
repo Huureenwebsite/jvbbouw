@@ -634,6 +634,18 @@ function Field({ label, type = 'text', name, textarea }) {
   )
 }
 
+// Google Ads-conversie die afgaat zodra een aanvraag succesvol is verzonden.
+// Vul het conversielabel in dat Google Ads geeft bij de conversieactie
+// (Doelen > Conversies > nieuwe actie). Vorm: 'AW-18216312295/AbCdEfGhIjK'.
+// Zolang dit leeg is, telt de tag nog geen conversie (verder werkt alles gewoon).
+const ADS_CONVERSION_SEND_TO = '' // TODO: label invullen, bv. 'AW-18216312295/XXXXXXXX'
+
+function fireAdsConversion() {
+  if (typeof window !== 'undefined' && typeof window.gtag === 'function' && ADS_CONVERSION_SEND_TO) {
+    window.gtag('event', 'conversion', { send_to: ADS_CONVERSION_SEND_TO })
+  }
+}
+
 function ContactForm() {
   const { company, contact, contactForm } = useContent()
   const [status, setStatus] = useState('idle') // 'idle' | 'sending' | 'sent' | 'error'
@@ -664,6 +676,7 @@ function ContactForm() {
           throw new Error(reason)
         }
         setStatus('sent')
+        fireAdsConversion() // Google Ads: aanvraag succesvol verzonden
       } else {
         // Fallback tot Formspree actief is: open de mailclient met de gegevens
         const body = [...data.entries()]
